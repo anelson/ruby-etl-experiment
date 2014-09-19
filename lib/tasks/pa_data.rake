@@ -1,5 +1,6 @@
 require 'csv'
 require 'ruby-progressbar'
+require 'upsert'
 
 namespace :padata do
 	desc "Drop all loaded raw PA data"
@@ -26,6 +27,8 @@ namespace :padata do
 		begin
 			File.open(csv_file_path, 'r') do |f|
 				headers = nil
+
+				upsert = Upsert.new(RawParcel.connection, RawParcel.table_name) 
 				f.each_with_index do |row, i| 
 					begin
 						# The first 4 lines are comments; skip them
@@ -41,13 +44,17 @@ namespace :padata do
 						else
 							data = Hash[headers.zip(try_parse_csv(row))]
 
-							parcel = RawParcel.find_or_initialize_by(Folio: data[:Folio])
 
-							data.each do |key, value|
-								parcel[key] = value
-							end
+							#upsert.row({:Folio => data[:Folio]}, data)
+							split_and_upsert(upsert, :Folio, data[:Folio], data)
 
-							parcel.save
+							# parcel = RawParcel.find_or_initialize_by(Folio: data[:Folio])
+
+							# data.each do |key, value|
+							# 	parcel[key] = value
+							# end
+
+							# parcel.save
 							progress.increment
 							count += 1
 						end
@@ -63,9 +70,11 @@ namespace :padata do
 
 			progress.total = count
 		rescue Exception => e
-			progress.finish
+			progress.stop
 			raise e
 		end
+
+		progress.finish
 
 		puts "Loaded #{count} records"
 	end
@@ -83,4 +92,19 @@ namespace :padata do
 			row.split("\",\"")
 		end
 	end
+
+	MAX_UPSERT_VALUES = 99
+	def split_and_upsert(upsert, id_column, id_value, data)
+		#PG can't upsert with with 100 or more columns due to a limitation on the # of params to a function.
+		#If needed, split it up
+		head_data = data.first(MAX_UPSERT_VALUES)
+		tail_data = data.drop(MAX_UPSERT_VALUES)
+
+		upsert.row({id_column => id_value}, head_data)
+
+		if !tail_data.empty?
+			split_and_upsert(upsert, id_column, id_value, tail_data)
+		end
+	end
+
 end

@@ -6,6 +6,8 @@ gem 'fastercsv', '~> 1.5.5'
 
 gem 'pg'
 
+gem 'upsert'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.5'
