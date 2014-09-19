@@ -1,6 +1,6 @@
 class CreateRawParcels < ActiveRecord::Migration
   def change
-    create_table :raw_parcels do |t|
+    create_table :raw_parcels, :id => false do |t|
 		  t.string :Folio
 			t.string :Municipality
 			t.string :Owner1
@@ -110,7 +110,7 @@ class CreateRawParcels < ActiveRecord::Migration
 			t.string :Prior2SchoolExemptionValue
 			t.string :Prior2SchoolTaxableValue
 
-      t.timestamps
+      #t.timestamps
     end
 
     add_index :raw_parcels, :Folio, :unique=>true

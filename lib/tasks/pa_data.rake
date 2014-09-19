@@ -1,8 +1,9 @@
 require 'csv'
 require 'ruby-progressbar'
-require 'upsert'
 
 namespace :padata do
+	ROWS_PER_BATCH = 1024
+
 	desc "Drop all loaded raw PA data"
 	task :clean => :environment do 
 		puts "Deleting all raw parcel records"
@@ -10,7 +11,7 @@ namespace :padata do
 	end
 
 	desc "Load raw parcel data"
-	task :load_raw_parcels, [:csv_file_path] => [:environment] do |t, args|
+	task :load_raw_parcels, [:csv_file_path] => [:environment, :clean] do |t, args|
 		args.with_defaults(:csv_file_path => "rawdata/PublicParcelExtract.csv")
 
 		CSV::Converters[:blank_to_nil] = lambda do |field|
@@ -27,8 +28,8 @@ namespace :padata do
 		begin
 			File.open(csv_file_path, 'r') do |f|
 				headers = nil
+				rows = []
 
-				upsert = Upsert.new(RawParcel.connection, RawParcel.table_name) 
 				f.each_with_index do |row, i| 
 					begin
 						# The first 4 lines are comments; skip them
@@ -42,30 +43,28 @@ namespace :padata do
 							# translate it
 							headers = CSV.parse(row)[0].map {|c| c == "1/2 Baths" ? :HalfBaths : c.to_sym}
 						else
-							data = Hash[headers.zip(try_parse_csv(row))]
+							# I know it's weird, we parse CSV only to generate CSV again, but it's to canonicalize the CSV into a form PG
+							# can use, since some of the input data are, shall we say, sloppy.
+							rows << try_parse_csv(row).to_csv
 
+							if (rows.count == ROWS_PER_BATCH) 
+								copy_rows RawParcel.connection, RawParcel.table_name, rows
+							end
 
-							#upsert.row({:Folio => data[:Folio]}, data)
-							split_and_upsert(upsert, :Folio, data[:Folio], data)
-
-							# parcel = RawParcel.find_or_initialize_by(Folio: data[:Folio])
-
-							# data.each do |key, value|
-							# 	parcel[key] = value
-							# end
-
-							# parcel.save
 							progress.increment
 							count += 1
 						end
 
 					rescue Exception => e
 						progress.log "#{csv_file_path}:#{i+1}: #{e.inspect}"
-						progress.log "Row contents: "
-						progress.log "  #{row}"
+						progress.log "Rows contents: "
+						progress.log "  #{rows}"
 						raise e
 					end
 				end
+
+				# Any remaining rows, write now
+				copy_rows RawParcel.connection, RawParcel.table_name, rows
 			end
 
 			progress.total = count
@@ -93,18 +92,14 @@ namespace :padata do
 		end
 	end
 
-	MAX_UPSERT_VALUES = 99
-	def split_and_upsert(upsert, id_column, id_value, data)
-		#PG can't upsert with with 100 or more columns due to a limitation on the # of params to a function.
-		#If needed, split it up
-		head_data = data.first(MAX_UPSERT_VALUES)
-		tail_data = data.drop(MAX_UPSERT_VALUES)
-
-		upsert.row({id_column => id_value}, head_data)
-
-		if !tail_data.empty?
-			split_and_upsert(upsert, id_column, id_value, tail_data)
+	def copy_rows(connection, table_name, rows)
+		if (!rows.empty?)
+			connection.raw_connection.copy_data("COPY #{table_name} FROM STDOUT CSV") do
+				rows.each do |row|
+					connection.raw_connection.put_copy_data row
+				end
+			end
+			rows.clear
 		end
 	end
-
 end
