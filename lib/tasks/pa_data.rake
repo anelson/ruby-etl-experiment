@@ -4,25 +4,49 @@ require 'ruby-progressbar'
 namespace :padata do
 	ROWS_PER_BATCH = 1024
 
-	desc "Drop all loaded raw PA data"
-	task :clean => :environment do 
-		puts "Deleting all raw parcel records"
-		RawParcel.delete_all
+	desc "Drop all loaded raw PA parcel data"
+	task :clean_raw_parcels => :environment do 
+		clean_raw_data RawParcel
 	end
 
 	desc "Load raw parcel data"
-	task :load_raw_parcels, [:csv_file_path] => [:environment, :clean] do |t, args|
+	task :load_raw_parcels, [:csv_file_path] => [:environment, :clean_raw_parcels] do |t, args|
 		args.with_defaults(:csv_file_path => "rawdata/PublicParcelExtract.csv")
 
+		csv_file_path = args[:csv_file_path]
+
+		load_raw_data RawParcel, csv_file_path
+	end
+
+	desc "Drop all loaded raw PA sales data"
+	task :clean_raw_sales => :environment do 
+		clean_raw_data RawSale
+	end
+
+	desc "Load raw sales data"
+	task :load_raw_sales, [:csv_file_path] => [:environment, :clean_raw_sales] do |t, args|
+		args.with_defaults(:csv_file_path => "rawdata/PublicSalesExtractAllYears.csv")
+
+		csv_file_path = args[:csv_file_path]
+
+		load_raw_data RawSale, csv_file_path
+	end
+
+	# generic method to clean up one of the raw data tables
+	def clean_raw_data(klass)
+		puts "Deleting all #{klass.name} records"
+		klass.delete_all
+	end
+
+	# generic method to load one of the raw data tables
+	def load_raw_data(klass, csv_file_path)
 		CSV::Converters[:blank_to_nil] = lambda do |field|
 		  field && field.empty? ? nil : field
 		end
 
-		csv_file_path = args[:csv_file_path]
+		puts "Loading sales data from #{csv_file_path}"
 
-		puts "Loading parcel data from #{csv_file_path}"
-
-		progress = ProgressBar.create(:title => "Raw parcels", :starting_at => 0, :total => nil, :format => "%t: Records: %c Elapsed: %a Records/second: %r  %b")
+		progress = ProgressBar.create(:title => klass.name, :starting_at => 0, :total => nil, :format => "%t: Records: %c Elapsed: %a Records/second: %r  %b")
 		count = 0
 
 		begin
@@ -32,28 +56,22 @@ namespace :padata do
 
 				f.each_with_index do |row, i| 
 					begin
-						# The first 4 lines are comments; skip them
-						next if i < 4
+						# The first 4 lines are comments and the 5th are column labels we don't use; skip them
+						next if i < 5
 
 						# The last row is a 'footer', delimited with 'F'
 						next if row.starts_with? "F "
 
-						if i == 4 
-							# Convert the headers to Ruby symbols, except the header '1/2 Baths', which isn't valid as an attribute so
-							# translate it
-							headers = CSV.parse(row)[0].map {|c| c == "1/2 Baths" ? :HalfBaths : c.to_sym}
-						else
-							# I know it's weird, we parse CSV only to generate CSV again, but it's to canonicalize the CSV into a form PG
-							# can use, since some of the input data are, shall we say, sloppy.
-							rows << try_parse_csv(row).to_csv
+						# I know it's weird, we parse CSV only to generate CSV again, but it's to canonicalize the CSV into a form PG
+						# can use, since some of the input data are, shall we say, sloppy.
+						rows << try_parse_csv(row).to_csv
 
-							if (rows.count == ROWS_PER_BATCH) 
-								copy_rows RawParcel.connection, RawParcel.table_name, rows
-							end
-
-							progress.increment
-							count += 1
+						if (rows.count == ROWS_PER_BATCH) 
+							copy_rows klass.connection, klass.table_name, rows
 						end
+
+						progress.increment
+						count += 1
 
 					rescue Exception => e
 						progress.log "#{csv_file_path}:#{i+1}: #{e.inspect}"
@@ -64,7 +82,7 @@ namespace :padata do
 				end
 
 				# Any remaining rows, write now
-				copy_rows RawParcel.connection, RawParcel.table_name, rows
+				copy_rows klass.connection, klass.table_name, rows
 			end
 
 			progress.total = count
