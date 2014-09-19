@@ -32,6 +32,90 @@ namespace :padata do
 		load_raw_data RawSale, csv_file_path
 	end
 
+	desc "Drop all loaded raw PA building detail data"
+	task :clean_raw_building_details => :environment do 
+		clean_raw_data RawBuildingDetail
+	end
+
+	desc "Load raw building details data"
+	task :load_raw_building_details, [:csv_file_path] => [:environment, :clean_raw_building_details] do |t, args|
+		args.with_defaults(:csv_file_path => "rawdata/PublicBuildingDetailsExtract.csv")
+
+		csv_file_path = args[:csv_file_path]
+
+		load_raw_data RawBuildingDetail, csv_file_path
+	end
+
+	desc "Drop all loaded raw PA building data"
+	task :clean_raw_buildings => :environment do 
+		clean_raw_data RawBuilding
+	end
+
+	desc "Load raw building data"
+	task :load_raw_buildings, [:csv_file_path] => [:environment, :clean_raw_buildings] do |t, args|
+		args.with_defaults(:csv_file_path => "rawdata/PublicBuildingExtract.csv")
+
+		csv_file_path = args[:csv_file_path]
+
+		load_raw_data RawBuilding, csv_file_path
+	end
+
+	desc "Drop all loaded raw PA building traverse data"
+	task :clean_raw_building_traverses => :environment do 
+		clean_raw_data RawBuildingTraverse
+	end
+
+	desc "Load raw building traverse data"
+	task :load_raw_building_traverses, [:csv_file_path] => [:environment, :clean_raw_building_traverses] do |t, args|
+		args.with_defaults(:csv_file_path => "rawdata/PublicBuildingTraverse.csv")
+
+		csv_file_path = args[:csv_file_path]
+
+		load_raw_data RawBuildingTraverse, csv_file_path
+	end
+
+	desc "Drop all loaded raw PA extra feature data"
+	task :clean_raw_extra_features => :environment do 
+		clean_raw_data RawExtraFeature
+	end
+
+	desc "Load raw extra feature data"
+	task :load_raw_extra_features, [:csv_file_path] => [:environment, :clean_raw_extra_features] do |t, args|
+		args.with_defaults(:csv_file_path => "rawdata/PublicExtraFeaturesExtract.csv")
+
+		csv_file_path = args[:csv_file_path]
+
+		load_raw_data RawExtraFeature, csv_file_path
+	end
+
+	desc "Drop all loaded raw PA land data"
+	task :clean_raw_land => :environment do 
+		clean_raw_data RawLand
+	end
+
+	desc "Load raw land data"
+	task :load_raw_land, [:csv_file_path] => [:environment, :clean_raw_land] do |t, args|
+		args.with_defaults(:csv_file_path => "rawdata/PublicLandExtract.csv")
+
+		csv_file_path = args[:csv_file_path]
+
+		load_raw_data RawLand, csv_file_path
+	end
+
+	desc "Drop all loaded raw PA legal data"
+	task :clean_raw_legal => :environment do 
+		clean_raw_data RawLegal
+	end
+
+	desc "Load raw legal data"
+	task :load_raw_legal, [:csv_file_path] => [:environment, :clean_raw_legal] do |t, args|
+		args.with_defaults(:csv_file_path => "rawdata/PublicLegalExtract.csv")
+
+		csv_file_path = args[:csv_file_path]
+
+		load_raw_data RawLegal, csv_file_path
+	end
+
 	# generic method to clean up one of the raw data tables
 	def clean_raw_data(klass)
 		puts "Deleting all #{klass.name} records"
@@ -44,9 +128,9 @@ namespace :padata do
 		  field && field.empty? ? nil : field
 		end
 
-		puts "Loading sales data from #{csv_file_path}"
+		puts "Loading data from #{csv_file_path}"
 
-		progress = ProgressBar.create(:title => klass.name, :starting_at => 0, :total => nil, :format => "%t: Records: %c Elapsed: %a Records/second: %r  %b")
+		progress = ProgressBar.create(:title => klass.name, :starting_at => 0, :total => nil, :format => "%t: Records: %c Elapsed %a Records/second: %r  %b")
 		count = 0
 
 		begin
@@ -105,8 +189,11 @@ namespace :padata do
 			CSV.parse(row, :converters => [:blank_to_nil])[0]
 		rescue CSV::MalformedCSVError => e
 			# Chop leading and trailing quotes, then split the rest
-			row = row[1..-1]
-			row.split("\",\"")
+			fixedrow = row.strip()[1..-2].split("\",\"")
+
+			Rails.logger.info "Fixed malformed row [[#{row}]] as [[#{fixedrow}]]"
+
+			fixedrow
 		end
 	end
 

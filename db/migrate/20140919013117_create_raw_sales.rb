@@ -50,5 +50,7 @@ class CreateRawSales < ActiveRecord::Migration
 
       #t.timestamps
     end
+
+    add_index :raw_sales, :Folio
   end
 end
