@@ -11,10 +11,86 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919163644) do
+ActiveRecord::Schema.define(version: 20140919194602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "parcel_tax_rolls", force: true do |t|
+    t.integer  "parcel_id",                        null: false
+    t.string   "folio",                            null: false
+    t.integer  "year",                             null: false
+    t.decimal  "land_value"
+    t.decimal  "building_value"
+    t.decimal  "extra_feature_value"
+    t.decimal  "total_value"
+    t.decimal  "homestead_ex_value"
+    t.decimal  "county_second_homestead_ex_value"
+    t.decimal  "city_second_homestead_ex_value"
+    t.decimal  "window_ex_value"
+    t.decimal  "county_other_ex_value"
+    t.decimal  "city_other_ex_value"
+    t.decimal  "disability_ex_value"
+    t.decimal  "county_senior_ex_value"
+    t.decimal  "city_senior_ex_value"
+    t.decimal  "blind_ex_value"
+    t.decimal  "assessed_value"
+    t.decimal  "county_exemption_value"
+    t.decimal  "county_taxable_value"
+    t.decimal  "city_exemption_value"
+    t.decimal  "city_taxable_value"
+    t.decimal  "regional_exemption_value"
+    t.decimal  "regional_taxable_value"
+    t.decimal  "school_exemption_value"
+    t.decimal  "school_taxable_value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "parcel_tax_rolls", ["folio", "year"], name: "index_parcel_tax_rolls_on_folio_and_year", unique: true, using: :btree
+
+  create_table "parcels", force: true do |t|
+    t.string   "folio",                 null: false
+    t.string   "municipality"
+    t.string   "owner1"
+    t.string   "owner2"
+    t.string   "owner3"
+    t.string   "mailing_address_line1"
+    t.string   "mailing_address_line2"
+    t.string   "mailing_address_line3"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.string   "site_address"
+    t.string   "street_number"
+    t.string   "street_prefix"
+    t.string   "street_name"
+    t.string   "street_number_suffix"
+    t.string   "street_suffix"
+    t.string   "street_direction"
+    t.string   "condo_unit"
+    t.string   "site_city"
+    t.string   "site_zip"
+    t.integer  "d_o_r_code"
+    t.integer  "zoning"
+    t.decimal  "sq_ftg"
+    t.decimal  "lot_s_f"
+    t.decimal  "acres"
+    t.decimal  "bedrooms"
+    t.decimal  "baths"
+    t.integer  "half_baths"
+    t.integer  "living_units"
+    t.integer  "stories"
+    t.integer  "number_of_building"
+    t.integer  "year_built"
+    t.integer  "effective_year_built"
+    t.integer  "millage_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "parcels", ["folio"], name: "index_parcels_on_folio", unique: true, using: :btree
 
   create_table "raw_building_details", id: false, force: true do |t|
     t.string "Folio"
@@ -420,5 +496,7 @@ ActiveRecord::Schema.define(version: 20140919163644) do
     t.decimal "Prior2SchoolExemptionValue"
     t.string  "Prior2SchoolTaxableValue"
   end
+
+  add_foreign_key "parcel_tax_rolls", "parcels", name: "parcel_tax_rolls_parcel_id_fk", dependent: :delete
 
 end
