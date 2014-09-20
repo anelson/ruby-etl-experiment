@@ -54,6 +54,9 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.25.1)
     minitest (5.4.1)
+    minitest-rails (2.1.0)
+      minitest (~> 5.4)
+      railties (~> 4.1)
     msgpack (0.5.8)
     multi_json (1.10.1)
     pg (0.17.1)
@@ -124,6 +127,7 @@ DEPENDENCIES
   foreigner
   jbuilder (~> 2.0)
   jquery-rails
+  minitest-rails
   msgpack
   pg
   rails (= 4.1.5)

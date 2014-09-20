@@ -35,7 +35,7 @@ class EtlStep < Rodimus::Step
 	# this call to flush doesn't necessarily defeat any buffering by the underlying IO
 	# object
 	def handle_output(row)
-		@outgoing.write(row).flush
+		@outgoing.write(row).flush unless @outgoing == nil
 	end
 
 	def close_descriptors
