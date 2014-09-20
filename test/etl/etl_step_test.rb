@@ -40,7 +40,7 @@ class EtlStepTest < EtlTestCase
 		@input_packer = MessagePack::Packer.new(@outgoing_to_test_step)
 		@output_unpacker = MessagePack::Unpacker.new(@incoming_from_test_step)
 
-		@row = {"foo" => "bar", "baz" => 2}
+		@row = {"a string" => "bar", "an int" => 2, "a float" => 1.0/3.0, "an array" => [1, 2, 3, "4", 5.0], "a hash" => { "x" => 1, "y" => 2, 3 => 4}}
 	end
 
 	def teardown
@@ -66,5 +66,28 @@ class EtlStepTest < EtlTestCase
 		result = @output_unpacker.read
 
 		assert_equal Hash["processed" => true, "row" => @row ], result
+	end
+
+	test "supports serializing all the necessary Ruby types" do
+		# Exercise the serializing of some extra Ruby types that msgpack doesn't itself handle, and that EtlStep doesn't handle very well
+		row = @row
+
+		row["a decimal"] = BigDecimal(1.5, 10)
+		row["a datetime"] = DateTime.now
+		row["a date"] = Date.today
+		row["a time"] = Time.now
+
+		@input_packer.write(row).flush
+		@outgoing_to_test_step.close
+
+		@step.run
+
+		result = @output_unpacker.read
+
+		#Due to msgpack limitations, result will not match row exactly, because decimal is serialized as float
+		assert_equal row["a decimal"], result["row"]["a decimal"]
+		assert_equal row["a datetime"].to_s, result["row"]["a datetime"]
+		assert_equal row["a date"].to_s, result["row"]["a date"]
+		assert_equal row["a time"].to_s, result["row"]["a time"]
 	end
 end
