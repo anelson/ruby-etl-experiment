@@ -1,12 +1,10 @@
-require 'rodimus'
 require 'csv'
-require 'msgpack'
 
 # Generic CSV input class; well, not exactly generic, since it handles the idiosyncracies of Miami-Dade County
 # property appraiser CSV files
 #
 # Generates output rows in the form of a hash with names from the column labels and values from each row of the CSV file
-class CsvInput < Rodimus::Step
+class CsvInput < EtlStep
 	attr_accessor :csv_file_path 
 
 	def initialize(csv_file_path)
@@ -24,8 +22,6 @@ class CsvInput < Rodimus::Step
 		Rails.logger.info "opening CSV file #{csv_file_path}"
 
 		@incoming = File.open(csv_file_path, 'r')
-		@outgoing.binmode
-		@outgoing = MessagePack::Packer.new(@outgoing)
 
 		#Skip the first 4 lines which are stupid county garbage
 		4.times { @incoming.readline }
@@ -40,10 +36,6 @@ class CsvInput < Rodimus::Step
 		# row will be a line from the input file.  Parse it into an array of elements using the CSV parser, then
 		# munge that into a hash using the header row for the column names
 		Hash[@headers.zip(try_parse_csv(row))]
-	end
-
-	def handle_output(row)
-		@outgoing.write(row).flush
 	end
 
 	private

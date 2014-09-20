@@ -1,17 +1,11 @@
-require 'rodimus'
-require 'msgpack'
-
 # Just for experimentation.  Play around with handling hashes from the CSV input
-class DummyOutput < Rodimus::Step
+class DummyOutput < EtlStep
 	attr_reader :muni_record_counts
 
 	def before_run_init_counts
 		Rails.logger.info "Init DummyOutput"
 
 		@muni_record_counts = Hash.new(0)
-
-		@incoming.binmode
-		@incoming = MessagePack::Unpacker.new(@incoming)
 	end
 
 	# Overwrite the standard behavior, which is to pipe the transformed row to the output stream
