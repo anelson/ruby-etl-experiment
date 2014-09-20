@@ -1,13 +1,13 @@
 class CreateRawLegals < ActiveRecord::Migration
   def change
     create_table :raw_legals, :id => false do |t|
-			t.string :Folio
-			t.string :LineNumber
-			t.string :Description
+			t.string :folio, :null => false
+			t.string :line_number
+			t.string :description
 			
       #t.timestamps
     end
 
-    add_index :raw_legals, :Folio
+    add_index :raw_legals, :folio
   end
 end

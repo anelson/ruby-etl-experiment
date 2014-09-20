@@ -116,6 +116,43 @@ namespace :padata do
 		load_raw_data RawLegal, csv_file_path
 	end
 
+	desc "Load all raw PA data"
+	task :load_all => [:environment, :load_raw_parcels, :load_raw_sales, :load_raw_building_details, :load_raw_buildings, :load_raw_building_traverses, :load_raw_extra_features, :load_raw_land, :load_raw_legal] do |t|
+	end
+
+	desc "Process previously loaded raw PA data"
+	task :process_data => :environment do
+		progress = ProgressBar.create(:title => "Processing raw PA data", :starting_at => 0, :total => RawParcel.count, :format => "%t: Records: %c Elapsed %a Records/second: %r  %b")
+		
+		parcels = []
+
+		begin
+			RawParcel.all.find_each(:batch_size => ROWS_PER_BATCH).each do |p|
+				parcels << p
+
+				if parcels.length == ROWS_PER_BATCH
+					parcels.each do |raw_parcel|
+						raw_parcel.upsert_to_parcel
+						progress.increment
+					end
+
+					parcels.clear
+				end
+			end
+
+			#Load any more left in the array
+			parcels.each do |raw_parcel|
+				raw_parcel.upsert_to_parcel
+					progress.increment
+			end
+		rescue Exception => e
+			progress.stop
+			raise e
+		end
+
+		progress.finish
+	end
+
 	# generic method to clean up one of the raw data tables
 	def clean_raw_data(klass)
 		puts "Deleting all #{klass.name} records"

@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 
 gem 'ruby-progressbar', '1.5.1'
 
-gem 'fastercsv', '~> 1.5.5'
-
 gem 'pg'
 
 gem 'upsert'

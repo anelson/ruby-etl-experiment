@@ -1,20 +1,20 @@
 class CreateRawBuildingDetails < ActiveRecord::Migration
   def change
     create_table :raw_building_details, :id => false do |t|
-			t.string :Folio
-			t.string :BuildingNumber
-			t.string :LineNumber
-			t.string :Type
-			t.string :Code
-			t.string :Percent
-			t.string :Points
-			t.string :SF_ADJ
-			t.string :Element
-			t.string :Description
+			t.string :folio, :null => false
+			t.string :building_number
+			t.string :line_number
+			t.string :type
+			t.string :code
+			t.string :percent
+			t.string :points
+			t.string :sf_adj
+			t.string :element
+			t.string :description
 
       #t.timestamps
     end
 
-    add_index :raw_building_details, :Folio
+    add_index :raw_building_details, :folio
   end
 end

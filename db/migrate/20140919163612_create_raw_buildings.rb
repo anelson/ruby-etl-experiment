@@ -1,45 +1,45 @@
 class CreateRawBuildings < ActiveRecord::Migration
   def change
     create_table :raw_buildings, :id => false do |t|
-			t.string :Folio
-			t.string :Municipality
-			t.string :SegNum
-			t.string :BuildingClass
-			t.string :QualityCode
-			t.string :ActualYear
-			t.string :EffectiveYear
-			t.string :RemodelYear
-			t.string :NormalDepr
-			t.string :AdditiveDepr
-			t.string :MultiplicativeDepr
-			t.string :OverrideDepr
-			t.string :PreferredDepr
-			t.string :TotalDeprAdj
-			t.string :AccruedDepr
-			t.string :TotalDepr
-			t.string :NHFactor
-			t.string :BasicPoints
-			t.string :TotalAdjPoints
-			t.string :TotalPoints
-			t.string :BaseRate
-			t.string :AdjBasePrice
-			t.string :NewConstValue
-			t.string :DemoValue
-			t.string :BaseValue
-			t.string :MarketPct
-			t.string :ActualArea
-			t.string :PctComp
-			t.string :SpecialRate
-			t.string :DateAppraised
-			t.string :BedroomCount
-			t.string :BathroomCount
-			t.string :UnitCount
-			t.string :FloorCount
-			t.string :BuildingNum
+			t.string :folio, :null => false
+			t.string :municipality
+			t.string :seg_num
+			t.string :building_class
+			t.string :quality_code
+			t.string :actual_year
+			t.string :effective_year
+			t.string :remodel_year
+			t.string :normal_depr
+			t.string :additive_depr
+			t.string :multiplicative_depr
+			t.string :override_depr
+			t.string :preferred_depr
+			t.string :total_depr_adj
+			t.string :accrued_depr
+			t.string :total_depr
+			t.string :n_h_factor
+			t.string :basic_points
+			t.string :total_adj_points
+			t.string :total_points
+			t.string :base_rate
+			t.string :adj_base_price
+			t.string :new_const_value
+			t.string :demo_value
+			t.string :base_value
+			t.string :market_pct
+			t.string :actual_area
+			t.string :pct_comp
+			t.string :special_rate
+			t.string :date_appraised
+			t.string :bedroom_count
+			t.string :bathroom_count
+			t.string :unit_count
+			t.string :floor_count
+			t.string :building_num
 
       # t.timestamps
     end
 
-    add_index :raw_buildings, :Folio
+    add_index :raw_buildings, :folio
   end
 end
