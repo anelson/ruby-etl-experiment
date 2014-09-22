@@ -53,7 +53,7 @@ class SinkEtlStep < EtlStep
 	def handle_output(x); nil; end
 end
 
-class EtlStepTest < EtlTestCase
+class EtlStepBenchmark < EtlTestCase
 	ITERATION_COUNT = 10000
 
 	test "benchmark raw throughput assuming no I/O" do
