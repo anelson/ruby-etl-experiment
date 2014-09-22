@@ -33,9 +33,9 @@ class TextFileInputStepTest < EtlTestCase
 		output = run_source_step(step)
 
 		assert_equal 3, output.length
-		assert_equal Hash[{ "line" => 1, "content" => "row 1\n" }], output[0]
-		assert_equal Hash[{ "line" => 2, "content" => "row 2\n" }], output[1]
-		assert_equal Hash[{ "line" => 3, "content" => "row 3\n" }], output[2]
+		assert_equal Hash[{ "line" => 1, "data" => "row 1\n" }], output[0]
+		assert_equal Hash[{ "line" => 2, "data" => "row 2\n" }], output[1]
+		assert_equal Hash[{ "line" => 3, "data" => "row 3\n" }], output[2]
 	end
 
 	test "skips header rows upon request" do
@@ -44,6 +44,6 @@ class TextFileInputStepTest < EtlTestCase
 		output = run_source_step(step)
 
 		assert_equal 1, output.length
-		assert_equal Hash[{ "line" => 3, "content" => "row 3\n" }], output[0]
+		assert_equal Hash[{ "line" => 3, "data" => "row 3\n" }], output[0]
 	end
 end

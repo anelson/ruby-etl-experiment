@@ -25,12 +25,12 @@ class TextFileInputStep < SourceStep
 
 		@bytes_read = @incoming.pos
 		@total_bytes = @incoming.size
-		@output_row = { 'line' => 0, 'content' => nil }
+		@output_row = { 'line' => 0, 'data' => nil }
 	end
 
 	def process_row(row)
 		@output_row['line'] = @line
-		@output_row['content'] = row
+		@output_row['data'] = row
 
 		@line += 1
 		@bytes_read = @incoming.pos
