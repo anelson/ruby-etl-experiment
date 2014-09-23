@@ -9,6 +9,8 @@
 class ContainerStep < TransformStep
 	attr_reader :steps
 	def initialize(steps)
+		super()
+
 		@steps = steps
 	end
 

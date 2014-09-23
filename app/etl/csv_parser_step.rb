@@ -7,6 +7,8 @@ require 'csv'
 class CsvParserStep < TransformStep
 	# The Ruby CSV parser is used here, so the options hash can contain any options supported by the CSV parser itself
 	def initialize(header_row: false, options: Hash.new)
+		super()
+		
 		@header_row = header_row
 		@options = CSV::DEFAULT_OPTIONS.merge(Hash[:converters => [:blank_to_nil]]).merge(options)
 

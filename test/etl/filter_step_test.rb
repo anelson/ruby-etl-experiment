@@ -1,7 +1,5 @@
 require 'test_helper'
 
-require 'msgpack'
-
 class FilterStepTest < EtlTestCase
 	test "passes all objects if the filter function returns true" do
 		step = FilterStep.new lambda { |row| true }
