@@ -38,9 +38,13 @@ class CreateParcels < ActiveRecord::Migration
 			t.integer :effective_year_built
 			t.integer :millage_code
 
+			t.string :rowhash
+
       t.timestamps
     end
 
     add_index :parcels, :folio, :unique=>true
+
+    add_index :parcels, [:folio, :rowhash], :unique=>true
   end
 end

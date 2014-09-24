@@ -28,6 +28,8 @@ class CreateParcelTaxRolls < ActiveRecord::Migration
 			t.decimal :school_exemption_value
 			t.decimal :school_taxable_value
 
+			t.string :rowhash
+
       t.timestamps
     end
 
