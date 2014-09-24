@@ -6,6 +6,7 @@
     <extended_description/>
     <trans_version/>
     <trans_type>Normal</trans_type>
+    <trans_status>0</trans_status>
     <directory>&#x2f;</directory>
     <parameters>
     </parameters>
@@ -46,7 +47,7 @@
       <offset>0.0</offset>
       <maxdiff>0.0</maxdiff>
     </maxdate>
-    <size_rowset>10000</size_rowset>
+    <size_rowset>1000</size_rowset>
     <sleep_time_empty>50</sleep_time_empty>
     <sleep_time_full>50</sleep_time_full>
     <unique_connections>N</unique_connections>
@@ -54,9 +55,9 @@
     <feedback_size>50000</feedback_size>
     <using_thread_priorities>Y</using_thread_priorities>
     <shared_objects_file/>
-    <capture_step_performance>N</capture_step_performance>
+    <capture_step_performance>Y</capture_step_performance>
     <step_performance_capturing_delay>1000</step_performance_capturing_delay>
-    <step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
+    <step_performance_capturing_size_limit>200</step_performance_capturing_size_limit>
     <dependencies>
     </dependencies>
     <partitionschemas>
@@ -99,30 +100,30 @@
   <order>
   <hop> <from>Text file input</from><to>Trim leading and trailing quotes</to><enabled>Y</enabled> </hop>
   <hop> <from>Trim leading and trailing quotes</from><to>Split Fields</to><enabled>Y</enabled> </hop>
-  <hop> <from>Split Fields</from><to>Select parcel values other than tax rolls</to><enabled>Y</enabled> </hop>
-  <hop> <from>Split Fields</from><to>Select current year tax roll values</to><enabled>Y</enabled> </hop>
-  <hop> <from>Select parcel values other than tax rolls</from><to>Add checksum to parcel</to><enabled>Y</enabled> </hop>
-  <hop> <from>Split Fields</from><to>Select prior year tax roll values</to><enabled>Y</enabled> </hop>
-  <hop> <from>Split Fields</from><to>Select prior 2 year tax roll values</to><enabled>Y</enabled> </hop>
-  <hop> <from>Select current year tax roll values</from><to>Add checksum to tax roll</to><enabled>Y</enabled> </hop>
-  <hop> <from>Select prior year tax roll values</from><to>Add checksum to tax roll</to><enabled>Y</enabled> </hop>
-  <hop> <from>Select prior 2 year tax roll values</from><to>Add checksum to tax roll</to><enabled>Y</enabled> </hop>
-  <hop> <from>Add checksum to parcel</from><to>Lookup existing hash for parcel</to><enabled>Y</enabled> </hop>
-  <hop> <from>Lookup existing hash for parcel</from><to>Add timestamp to parcel</to><enabled>Y</enabled> </hop>
-  <hop> <from>Add timestamp to parcel</from><to>Identify new rows</to><enabled>Y</enabled> </hop>
   <hop> <from>Identify new rows</from><to>Insert new rows</to><enabled>Y</enabled> </hop>
-  <hop> <from>Identify new rows</from><to>Identify rows that have changed</to><enabled>Y</enabled> </hop>
-  <hop> <from>Identify rows that have changed</from><to>Update parcel</to><enabled>Y</enabled> </hop>
-  <hop> <from>Lookup existing hash for tax roll</from><to>Add timestamp to tax roll</to><enabled>Y</enabled> </hop>
-  <hop> <from>Add timestamp to tax roll</from><to>Identify new tax roll rows</to><enabled>Y</enabled> </hop>
-  <hop> <from>Insert new rows</from><to>End of parcel process</to><enabled>Y</enabled> </hop>
-  <hop> <from>Update parcel</from><to>End of parcel process</to><enabled>Y</enabled> </hop>
-  <hop> <from>Ensure parcel has been processed</from><to>Lookup parcel id for parcel</to><enabled>Y</enabled> </hop>
-  <hop> <from>Identify new tax roll rows</from><to>Identify tax rolls that have changed</to><enabled>Y</enabled> </hop>
-  <hop> <from>Identify tax rolls that have changed</from><to>Update tax roll</to><enabled>Y</enabled> </hop>
+  <hop> <from>Identify rows that have changed</from><to>Update changed parcel</to><enabled>Y</enabled> </hop>
+  <hop> <from>Insert new rows</from><to>Include only new parcel ID and tax roll fields</to><enabled>Y</enabled> </hop>
+  <hop> <from>Include only existing id and tax roll fields</from><to>Dummy &#x28;do nothing&#x29;</to><enabled>Y</enabled> </hop>
+  <hop> <from>Include only new parcel ID and tax roll fields</from><to>Dummy &#x28;do nothing&#x29;</to><enabled>Y</enabled> </hop>
   <hop> <from>Add checksum to tax roll</from><to>Lookup existing hash for tax roll</to><enabled>Y</enabled> </hop>
-  <hop> <from>Identify new tax roll rows</from><to>Ensure parcel has been processed</to><enabled>Y</enabled> </hop>
-  <hop> <from>Lookup parcel id for parcel</from><to>Insert new tax rolls</to><enabled>Y</enabled> </hop>
+  <hop> <from>Add timestamp to tax roll</from><to>Identify new tax roll rows</to><enabled>Y</enabled> </hop>
+  <hop> <from>Identify new tax roll rows</from><to>Identify tax rolls that have changed</to><enabled>Y</enabled> </hop>
+  <hop> <from>Identify new tax roll rows</from><to>Insert new tax roll records</to><enabled>Y</enabled> </hop>
+  <hop> <from>Identify tax rolls that have changed</from><to>Update tax roll</to><enabled>Y</enabled> </hop>
+  <hop> <from>Lookup existing hash for tax roll</from><to>Add timestamp to tax roll</to><enabled>Y</enabled> </hop>
+  <hop> <from>Select current year tax roll values</from><to>Add checksum to tax roll</to><enabled>Y</enabled> </hop>
+  <hop> <from>Select prior 2 year tax roll values</from><to>Add checksum to tax roll</to><enabled>Y</enabled> </hop>
+  <hop> <from>Select prior year tax roll values</from><to>Add checksum to tax roll</to><enabled>Y</enabled> </hop>
+  <hop> <from>Dummy &#x28;do nothing&#x29;</from><to>Select prior 2 year tax roll values</to><enabled>Y</enabled> </hop>
+  <hop> <from>Dummy &#x28;do nothing&#x29;</from><to>Select prior year tax roll values</to><enabled>Y</enabled> </hop>
+  <hop> <from>Dummy &#x28;do nothing&#x29;</from><to>Select current year tax roll values</to><enabled>Y</enabled> </hop>
+  <hop> <from>Add checksum to parcel</from><to>Add timestamp to parcel</to><enabled>Y</enabled> </hop>
+  <hop> <from>Split Fields</from><to>Lookup existing hash for parcel</to><enabled>Y</enabled> </hop>
+  <hop> <from>Lookup existing hash for parcel</from><to>Add checksum to parcel</to><enabled>Y</enabled> </hop>
+  <hop> <from>Add timestamp to parcel</from><to>Identify new rows</to><enabled>Y</enabled> </hop>
+  <hop> <from>Identify new rows</from><to>Handle existing rows</to><enabled>Y</enabled> </hop>
+  <hop> <from>Handle existing rows</from><to>Identify rows that have changed</to><enabled>Y</enabled> </hop>
+  <hop> <from>Handle existing rows</from><to>Include only existing id and tax roll fields</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>Add checksum to parcel</name>
@@ -251,8 +252,8 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>952</xloc>
-      <yloc>120</yloc>
+      <xloc>813</xloc>
+      <yloc>23</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -348,8 +349,8 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>532</xloc>
-      <yloc>391</yloc>
+      <xloc>589</xloc>
+      <yloc>832</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -367,14 +368,77 @@
            </partitioning>
     <fields>
       <field>
-        <name>timestamp&#xa;Name	Type&#xa;	system date &#x28;variable&#x29;&#xa;</name>
+        <name>timestamp</name>
         <type>system date &#x28;fixed&#x29;</type>
         </field>
       </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>953</xloc>
-      <yloc>324</yloc>
+      <xloc>973</xloc>
+      <yloc>19</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Add timestamp to tax roll</name>
+    <type>SystemInfo</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>timestamp</name>
+        <type>system date &#x28;fixed&#x29;</type>
+        </field>
+      </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>590</xloc>
+      <yloc>1035</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Dummy &#x28;do nothing&#x29;</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>555</xloc>
+      <yloc>560</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Handle existing rows</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>431</xloc>
+      <yloc>209</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -391,7 +455,7 @@
            <schema_name/>
            </partitioning>
 <send_true_to>Insert new rows</send_true_to>
-<send_false_to>Identify rows that have changed</send_false_to>
+<send_false_to>Handle existing rows</send_false_to>
     <compare>
 <condition>
  <negated>N</negated>
@@ -402,8 +466,37 @@
     </compare>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>929</xloc>
-      <yloc>426</yloc>
+      <xloc>625</xloc>
+      <yloc>171</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Identify new tax roll rows</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+<send_true_to>Insert new tax roll records</send_true_to>
+<send_false_to>Identify tax rolls that have changed</send_false_to>
+    <compare>
+<condition>
+ <negated>N</negated>
+ <leftvalue>existing_rowhash</leftvalue>
+ <function>IS NULL</function>
+ <rightvalue/>
+ </condition>
+    </compare>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>581</xloc>
+      <yloc>1133</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -419,7 +512,7 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-<send_true_to>Update parcel</send_true_to>
+<send_true_to>Update changed parcel</send_true_to>
 <send_false_to/>
     <compare>
 <condition>
@@ -431,8 +524,1764 @@
     </compare>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>837</xloc>
-      <yloc>523</yloc>
+      <xloc>151</xloc>
+      <yloc>205</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Identify tax rolls that have changed</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+<send_true_to>Update tax roll</send_true_to>
+<send_false_to/>
+    <compare>
+<condition>
+ <negated>N</negated>
+ <leftvalue>rowhash</leftvalue>
+ <function>&#x3c;&#x3e;</function>
+ <rightvalue>existing_rowhash</rightvalue>
+ </condition>
+    </compare>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>426</xloc>
+      <yloc>1221</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Include only existing id and tax roll fields</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>existing_id</name>
+        <rename>id</rename>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>folio</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_year</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_land_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_building_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_extra_feature_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_total_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_window_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_disability_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_blind_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_assessed_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_regional_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_regional_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_school_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_school_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_year</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_land_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_building_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_extra_feature_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_total_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_window_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_disability_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_blind_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_assessed_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_regional_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_regional_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_school_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_school_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_year</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_land_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_building_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_extra_feature_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_total_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_window_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_disability_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_blind_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_assessed_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_regional_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_regional_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_school_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_school_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+      <meta>        <name>folio</name>
+        <rename>folio</rename>
+        <type>None</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_year</name>
+        <rename>current_year</rename>
+        <type>None</type>
+        <length>-2</length>
+        <precision>0</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_land_value</name>
+        <rename>current_land_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_building_value</name>
+        <rename>current_building_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_extra_feature_value</name>
+        <rename>current_extra_feature_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_total_value</name>
+        <rename>current_total_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_homestead_ex_value</name>
+        <rename>current_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_county_second_homestead_ex_value</name>
+        <rename>current_county_second_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_city_second_homestead_ex_value</name>
+        <rename>current_city_second_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_window_ex_value</name>
+        <rename>current_window_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_county_other_ex_value</name>
+        <rename>current_county_other_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_city_other_ex_value</name>
+        <rename>current_city_other_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_disability_ex_value</name>
+        <rename>current_disability_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_county_senior_ex_value</name>
+        <rename>current_county_senior_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_city_senior_ex_value</name>
+        <rename>current_city_senior_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_blind_ex_value</name>
+        <rename>current_blind_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_assessed_value</name>
+        <rename>current_assessed_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_county_exemption_value</name>
+        <rename>current_county_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_county_taxable_value</name>
+        <rename>current_county_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_city_exemption_value</name>
+        <rename>current_city_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_city_taxable_value</name>
+        <rename>current_city_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_regional_exemption_value</name>
+        <rename>current_regional_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_regional_taxable_value</name>
+        <rename>current_regional_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_school_exemption_value</name>
+        <rename>current_school_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>current_school_taxable_value</name>
+        <rename>current_school_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_year</name>
+        <rename>prior_year</rename>
+        <type>None</type>
+        <length>-2</length>
+        <precision>0</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_land_value</name>
+        <rename>prior_land_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_building_value</name>
+        <rename>prior_building_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_extra_feature_value</name>
+        <rename>prior_extra_feature_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_total_value</name>
+        <rename>prior_total_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_homestead_ex_value</name>
+        <rename>prior_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_county_second_homestead_ex_value</name>
+        <rename>prior_county_second_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_city_second_homestead_ex_value</name>
+        <rename>prior_city_second_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_window_ex_value</name>
+        <rename>prior_window_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_county_other_ex_value</name>
+        <rename>prior_county_other_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_city_other_ex_value</name>
+        <rename>prior_city_other_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_disability_ex_value</name>
+        <rename>prior_disability_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_county_senior_ex_value</name>
+        <rename>prior_county_senior_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_city_senior_ex_value</name>
+        <rename>prior_city_senior_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_blind_ex_value</name>
+        <rename>prior_blind_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_assessed_value</name>
+        <rename>prior_assessed_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_county_exemption_value</name>
+        <rename>prior_county_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_county_taxable_value</name>
+        <rename>prior_county_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_city_exemption_value</name>
+        <rename>prior_city_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_city_taxable_value</name>
+        <rename>prior_city_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_regional_exemption_value</name>
+        <rename>prior_regional_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_regional_taxable_value</name>
+        <rename>prior_regional_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_school_exemption_value</name>
+        <rename>prior_school_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior_school_taxable_value</name>
+        <rename>prior_school_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_year</name>
+        <rename>prior2_year</rename>
+        <type>None</type>
+        <length>-2</length>
+        <precision>0</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_land_value</name>
+        <rename>prior2_land_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_building_value</name>
+        <rename>prior2_building_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_extra_feature_value</name>
+        <rename>prior2_extra_feature_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_total_value</name>
+        <rename>prior2_total_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_homestead_ex_value</name>
+        <rename>prior2_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_county_second_homestead_ex_value</name>
+        <rename>prior2_county_second_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_city_second_homestead_ex_value</name>
+        <rename>prior2_city_second_homestead_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_window_ex_value</name>
+        <rename>prior2_window_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_county_other_ex_value</name>
+        <rename>prior2_county_other_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_city_other_ex_value</name>
+        <rename>prior2_city_other_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_disability_ex_value</name>
+        <rename>prior2_disability_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_county_senior_ex_value</name>
+        <rename>prior2_county_senior_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_city_senior_ex_value</name>
+        <rename>prior2_city_senior_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_blind_ex_value</name>
+        <rename>prior2_blind_ex_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_assessed_value</name>
+        <rename>prior2_assessed_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_county_exemption_value</name>
+        <rename>prior2_county_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_county_taxable_value</name>
+        <rename>prior2_county_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_city_exemption_value</name>
+        <rename>prior2_city_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_city_taxable_value</name>
+        <rename>prior2_city_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_regional_exemption_value</name>
+        <rename>prior2_regional_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_regional_taxable_value</name>
+        <rename>prior2_regional_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_school_exemption_value</name>
+        <rename>prior2_school_exemption_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>      <meta>        <name>prior2_school_taxable_value</name>
+        <rename>prior2_school_taxable_value</rename>
+        <type>None</type>
+        <length>18</length>
+        <precision>10</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>388</xloc>
+      <yloc>362</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Include only new parcel ID and tax roll fields</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>id</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>folio</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_year</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_land_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_building_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_extra_feature_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_total_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_window_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_disability_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_blind_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_assessed_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_county_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_city_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_regional_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_regional_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_school_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>current_school_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_year</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_land_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_building_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_extra_feature_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_total_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_window_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_disability_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_blind_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_assessed_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_county_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_city_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_regional_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_regional_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_school_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior_school_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_year</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_land_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_building_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_extra_feature_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_total_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_second_homestead_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_window_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_other_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_disability_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_senior_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_blind_ex_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_assessed_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_county_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_city_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_regional_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_regional_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_school_exemption_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>prior2_school_taxable_value</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>733</xloc>
+      <yloc>482</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -454,7 +2303,7 @@
     <commit>1000</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
+    <use_batch>N</use_batch>
     <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
     <partitioning_field/>
@@ -463,8 +2312,8 @@
     <tablename_in_field>N</tablename_in_field>
     <tablename_field/>
     <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
+    <return_keys>Y</return_keys>
+    <return_field>id</return_field>
     <fields>
         <field>
           <column_name>folio</column_name>
@@ -625,8 +2474,158 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>1044</xloc>
-      <yloc>550</yloc>
+      <xloc>753</xloc>
+      <yloc>284</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Insert new tax roll records</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>casafied_dev</connection>
+    <schema/>
+    <table>parcel_tax_rolls</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+        <field>
+          <column_name>parcel_id</column_name>
+          <stream_name>parcel_id</stream_name>
+        </field>
+        <field>
+          <column_name>folio</column_name>
+          <stream_name>folio</stream_name>
+        </field>
+        <field>
+          <column_name>year</column_name>
+          <stream_name>year</stream_name>
+        </field>
+        <field>
+          <column_name>land_value</column_name>
+          <stream_name>land_value</stream_name>
+        </field>
+        <field>
+          <column_name>building_value</column_name>
+          <stream_name>building_value</stream_name>
+        </field>
+        <field>
+          <column_name>extra_feature_value</column_name>
+          <stream_name>extra_feature_value</stream_name>
+        </field>
+        <field>
+          <column_name>total_value</column_name>
+          <stream_name>total_value</stream_name>
+        </field>
+        <field>
+          <column_name>homestead_ex_value</column_name>
+          <stream_name>homestead_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>county_second_homestead_ex_value</column_name>
+          <stream_name>county_second_homestead_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>city_second_homestead_ex_value</column_name>
+          <stream_name>city_second_homestead_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>window_ex_value</column_name>
+          <stream_name>window_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>county_other_ex_value</column_name>
+          <stream_name>county_other_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>city_other_ex_value</column_name>
+          <stream_name>city_other_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>disability_ex_value</column_name>
+          <stream_name>disability_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>county_senior_ex_value</column_name>
+          <stream_name>county_senior_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>blind_ex_value</column_name>
+          <stream_name>blind_ex_value</stream_name>
+        </field>
+        <field>
+          <column_name>assessed_value</column_name>
+          <stream_name>assessed_value</stream_name>
+        </field>
+        <field>
+          <column_name>county_exemption_value</column_name>
+          <stream_name>county_exemption_value</stream_name>
+        </field>
+        <field>
+          <column_name>county_taxable_value</column_name>
+          <stream_name>county_taxable_value</stream_name>
+        </field>
+        <field>
+          <column_name>city_exemption_value</column_name>
+          <stream_name>city_exemption_value</stream_name>
+        </field>
+        <field>
+          <column_name>city_taxable_value</column_name>
+          <stream_name>city_taxable_value</stream_name>
+        </field>
+        <field>
+          <column_name>regional_exemption_value</column_name>
+          <stream_name>regional_exemption_value</stream_name>
+        </field>
+        <field>
+          <column_name>regional_taxable_value</column_name>
+          <stream_name>regional_taxable_value</stream_name>
+        </field>
+        <field>
+          <column_name>school_exemption_value</column_name>
+          <stream_name>school_exemption_value</stream_name>
+        </field>
+        <field>
+          <column_name>school_taxable_value</column_name>
+          <stream_name>school_taxable_value</stream_name>
+        </field>
+        <field>
+          <column_name>rowhash</column_name>
+          <stream_name>rowhash</stream_name>
+        </field>
+        <field>
+          <column_name>created_at</column_name>
+          <stream_name>timestamp</stream_name>
+        </field>
+        <field>
+          <column_name>updated_at</column_name>
+          <stream_name>timestamp</stream_name>
+        </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>684</xloc>
+      <yloc>1236</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -643,8 +2642,8 @@
            <schema_name/>
            </partitioning>
     <connection>casafied_dev</connection>
-    <rowlimit>0</rowlimit>
-    <sql>SELECT rowhash as existing_rowhash FROM parcels WHERE folio &#x3d; &#x3f;</sql>
+    <rowlimit>1</rowlimit>
+    <sql>SELECT id as existing_id, rowhash as existing_rowhash FROM parcels WHERE folio &#x3d; &#x3f;</sql>
     <outer_join>Y</outer_join>
     <replace_vars>N</replace_vars>
     <parameter>
@@ -655,8 +2654,46 @@
     </parameter>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>953</xloc>
-      <yloc>226</yloc>
+      <xloc>650</xloc>
+      <yloc>33</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Lookup existing hash for tax roll</name>
+    <type>DBJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>casafied_dev</connection>
+    <rowlimit>0</rowlimit>
+    <sql>SELECT id as existing_id, rowhash as existing_rowhash FROM parcel_tax_rolls WHERE parcel_id &#x3d; &#x3f; AND folio &#x3d; &#x3f; AND year &#x3d; &#x3f;</sql>
+    <outer_join>Y</outer_join>
+    <replace_vars>N</replace_vars>
+    <parameter>
+      <field>
+        <name>parcel_id</name>
+        <type>Integer</type>
+      </field>
+      <field>
+        <name>folio</name>
+        <type>String</type>
+      </field>
+      <field>
+        <name>year</name>
+        <type>Integer</type>
+      </field>
+    </parameter>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>588</xloc>
+      <yloc>930</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -672,7 +2709,11 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <fields>      <field>        <name>folio</name>
+    <fields>      <field>        <name>id</name>
+        <rename>parcel_id</rename>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>folio</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
@@ -771,172 +2812,8 @@
       </field>        <select_unspecified>N</select_unspecified>
     </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>645</xloc>
-      <yloc>269</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Select parcel values other than tax rolls</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>      <field>        <name>folio</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>municipality</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>owner1</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>owner2</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>owner3</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>mailing_address_line1</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>mailing_address_line2</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>mailing_address_line3</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>city</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>state</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>zip</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>country</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>site_address</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>street_number</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>street_prefix</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>street_name</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>street_number_suffix</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>street_suffix</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>street_direction</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>condo_unit</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>site_city</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>site_zip</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>d_o_r_code</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>zoning</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>sq_ftg</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>lot_s_f</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>acres</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>bedrooms</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>baths</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>half_baths</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>living_units</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>stories</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>number_of_building</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>year_built</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>effective_year_built</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>      <field>        <name>millage_code</name>
-        <rename/>
-        <length>-2</length>
-        <precision>-2</precision>
-      </field>        <select_unspecified>N</select_unspecified>
-    </fields>     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>722</xloc>
-      <yloc>130</yloc>
+      <xloc>787</xloc>
+      <yloc>717</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -952,7 +2829,11 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <fields>      <field>        <name>folio</name>
+    <fields>      <field>        <name>id</name>
+        <rename>parcel_id</rename>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>folio</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
@@ -1051,8 +2932,8 @@
       </field>        <select_unspecified>N</select_unspecified>
     </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>397</xloc>
-      <yloc>271</yloc>
+      <xloc>416</xloc>
+      <yloc>722</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -1068,7 +2949,11 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <fields>      <field>        <name>folio</name>
+    <fields>      <field>        <name>id</name>
+        <rename>parcel_id</rename>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>folio</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
@@ -1167,8 +3052,8 @@
       </field>        <select_unspecified>N</select_unspecified>
     </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>524</xloc>
-      <yloc>238</yloc>
+      <xloc>580</xloc>
+      <yloc>696</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -2485,8 +4370,8 @@
         <trimtype>none</trimtype>
       </field>    </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>512</xloc>
-      <yloc>144</yloc>
+      <xloc>502</xloc>
+      <yloc>24</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -2556,7 +4441,7 @@
         <repeat>N</repeat>
       </field>
     </fields>
-    <limit>0</limit>
+    <limit>50000</limit>
     <error_ignored>N</error_ignored>
     <skip_bad_files>N</skip_bad_files>
     <file_error_field/>
@@ -2583,8 +4468,8 @@
     <sizeFieldName/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>73</xloc>
-      <yloc>144</yloc>
+      <xloc>63</xloc>
+      <yloc>24</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -2628,14 +4513,14 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>280</xloc>
-      <yloc>140</yloc>
+      <xloc>270</xloc>
+      <yloc>20</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>Update parcel</name>
+    <name>Update changed parcel</name>
     <type>Update</type>
     <description/>
     <distribute>Y</distribute>
@@ -2655,8 +4540,8 @@
       <schema/>
       <table>parcels</table>
       <key>
-        <name>folio</name>
-        <field>folio</field>
+        <name>existing_id</name>
+        <field>id</field>
         <condition>&#x3d;</condition>
         <name2/>
         </key>
@@ -2811,349 +4696,8 @@
       </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>839</xloc>
-      <yloc>660</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Lookup existing hash for tax roll</name>
-    <type>DBJoin</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>casafied_dev</connection>
-    <rowlimit>0</rowlimit>
-    <sql>SELECT rowhash as existing_rowhash FROM parcel_tax_rolls WHERE folio &#x3d; &#x3f; AND year &#x3d; &#x3f;</sql>
-    <outer_join>Y</outer_join>
-    <replace_vars>N</replace_vars>
-    <parameter>
-      <field>
-        <name>folio</name>
-        <type>String</type>
-      </field>
-      <field>
-        <name>year</name>
-        <type>Integer</type>
-      </field>
-    </parameter>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>541</xloc>
-      <yloc>621</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Add timestamp to tax roll</name>
-    <type>SystemInfo</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>
-      <field>
-        <name>timestamp</name>
-        <type>system date &#x28;fixed&#x29;</type>
-        </field>
-      </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>545</xloc>
-      <yloc>721</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Identify new tax roll rows</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-<send_true_to>Ensure parcel has been processed</send_true_to>
-<send_false_to>Identify tax rolls that have changed</send_false_to>
-    <compare>
-<condition>
- <negated>N</negated>
- <leftvalue>existing_rowhash</leftvalue>
- <function>IS NULL</function>
- <rightvalue/>
- </condition>
-    </compare>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>550</xloc>
-      <yloc>811</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Insert new tax rolls</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>casafied_dev</connection>
-    <schema>public</schema>
-    <table>parcel_tax_rolls</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-        <field>
-          <column_name>parcel_id</column_name>
-          <stream_name>parcel_id</stream_name>
-        </field>
-        <field>
-          <column_name>folio</column_name>
-          <stream_name>folio</stream_name>
-        </field>
-        <field>
-          <column_name>year</column_name>
-          <stream_name>year</stream_name>
-        </field>
-        <field>
-          <column_name>land_value</column_name>
-          <stream_name>land_value</stream_name>
-        </field>
-        <field>
-          <column_name>building_value</column_name>
-          <stream_name>building_value</stream_name>
-        </field>
-        <field>
-          <column_name>extra_feature_value</column_name>
-          <stream_name>extra_feature_value</stream_name>
-        </field>
-        <field>
-          <column_name>total_value</column_name>
-          <stream_name>total_value</stream_name>
-        </field>
-        <field>
-          <column_name>homestead_ex_value</column_name>
-          <stream_name>homestead_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>county_second_homestead_ex_value</column_name>
-          <stream_name>county_second_homestead_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>city_second_homestead_ex_value</column_name>
-          <stream_name>city_second_homestead_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>window_ex_value</column_name>
-          <stream_name>window_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>county_other_ex_value</column_name>
-          <stream_name>county_other_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>city_other_ex_value</column_name>
-          <stream_name>city_other_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>disability_ex_value</column_name>
-          <stream_name>disability_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>county_senior_ex_value</column_name>
-          <stream_name>county_senior_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>blind_ex_value</column_name>
-          <stream_name>blind_ex_value</stream_name>
-        </field>
-        <field>
-          <column_name>assessed_value</column_name>
-          <stream_name>assessed_value</stream_name>
-        </field>
-        <field>
-          <column_name>county_exemption_value</column_name>
-          <stream_name>county_exemption_value</stream_name>
-        </field>
-        <field>
-          <column_name>county_taxable_value</column_name>
-          <stream_name>county_taxable_value</stream_name>
-        </field>
-        <field>
-          <column_name>city_exemption_value</column_name>
-          <stream_name>city_exemption_value</stream_name>
-        </field>
-        <field>
-          <column_name>city_taxable_value</column_name>
-          <stream_name>city_taxable_value</stream_name>
-        </field>
-        <field>
-          <column_name>regional_exemption_value</column_name>
-          <stream_name>regional_exemption_value</stream_name>
-        </field>
-        <field>
-          <column_name>regional_taxable_value</column_name>
-          <stream_name>regional_taxable_value</stream_name>
-        </field>
-        <field>
-          <column_name>school_exemption_value</column_name>
-          <stream_name>school_exemption_value</stream_name>
-        </field>
-        <field>
-          <column_name>school_taxable_value</column_name>
-          <stream_name>school_taxable_value</stream_name>
-        </field>
-        <field>
-          <column_name>rowhash</column_name>
-          <stream_name>rowhash</stream_name>
-        </field>
-        <field>
-          <column_name>created_at</column_name>
-          <stream_name>timestamp</stream_name>
-        </field>
-        <field>
-          <column_name>updated_at</column_name>
-          <stream_name>timestamp</stream_name>
-        </field>
-    </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>712</xloc>
-      <yloc>1001</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Ensure parcel has been processed</name>
-    <type>BlockUntilStepsFinish</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <steps>
-      <step>
-        <name>End of parcel process</name>
-        <CopyNr>0</CopyNr>
-        </step>
-      </steps>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>708</xloc>
-      <yloc>825</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>End of parcel process</name>
-    <type>Dummy</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>970</xloc>
-      <yloc>721</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Lookup parcel id for parcel</name>
-    <type>DBJoin</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>casafied_dev</connection>
-    <rowlimit>1</rowlimit>
-    <sql>SELECT id as parcel_id from parcels where folio &#x3d; &#x3f;</sql>
-    <outer_join>N</outer_join>
-    <replace_vars>N</replace_vars>
-    <parameter>
-      <field>
-        <name>folio</name>
-        <type>String</type>
-      </field>
-    </parameter>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>715</xloc>
-      <yloc>916</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Identify tax rolls that have changed</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-<send_true_to>Update tax roll</send_true_to>
-<send_false_to/>
-    <compare>
-<condition>
- <negated>N</negated>
- <leftvalue>rowhash</leftvalue>
- <function>&#x3c;&#x3e;</function>
- <rightvalue>existing_rowhash</rightvalue>
- </condition>
-    </compare>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>341</xloc>
-      <yloc>851</yloc>
+      <xloc>140</xloc>
+      <yloc>332</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -3177,16 +4721,10 @@
     <ignore_flag_field/>
     <lookup>
       <schema/>
-      <table>lookup table</table>
+      <table>parcel_tax_rolls</table>
       <key>
-        <name>folio</name>
-        <field>folio</field>
-        <condition>&#x3d;</condition>
-        <name2/>
-        </key>
-      <key>
-        <name>year</name>
-        <field>year</field>
+        <name>existing_id</name>
+        <field>id</field>
         <condition>&#x3d;</condition>
         <name2/>
         </key>
@@ -3289,8 +4827,8 @@
       </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>349</xloc>
-      <yloc>979</yloc>
+      <xloc>426</xloc>
+      <yloc>1340</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
