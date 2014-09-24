@@ -153,6 +153,26 @@ namespace :padata do
 		progress.finish
 	end
 
+	desc "Play with rodimus"
+	task :rod_test => :environment do
+		Rodimus.configure do |config|
+			config.logger = Rails.logger
+			config.benchmarking = true
+		end
+
+		t = Rodimus::Transformation.new
+
+		csv_step = CsvInput.new("rawdata/mini_parcel.csv")
+		output_step = DummyOutput.new
+
+		t.steps << csv_step
+		t.steps << output_step
+		
+		t.run
+
+		puts "Muni code counts: #{output_step.muni_record_counts}"
+	end
+
 	# generic method to clean up one of the raw data tables
 	def clean_raw_data(klass)
 		puts "Deleting all #{klass.name} records"
