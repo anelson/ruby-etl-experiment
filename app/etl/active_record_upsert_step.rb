@@ -10,10 +10,6 @@ class ActiveRecordUpsertStep < SinkStep
 		@selector = selector || [ @model_class.primary_key ]
 	end
 
-	def before_run_instantiate_upsert
-		@upsert = Upsert.new(@model_class.connection, @model_class.table_name)
-	end
-
 	def process_row(row)
 		upsert_row(row, row['data'])
 	end
@@ -21,7 +17,6 @@ class ActiveRecordUpsertStep < SinkStep
 	def upsert_row(row, data)
 		# Figure out which input attributes will be used
 		included_keys = data.keys.select { |k| include_key?(k) }
-
 		# Figure out the mapping of input keys to model attributes
 		attribute_mapping = included_keys.each_with_object({}) do |key, h| 
 			attribute = map_key_to_attribute(key)

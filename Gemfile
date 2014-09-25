@@ -14,6 +14,8 @@ gem 'msgpack'
 
 gem 'minitest-rails'
 
+gem 'thread_safe'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.5'

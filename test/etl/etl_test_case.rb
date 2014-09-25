@@ -9,7 +9,7 @@ class EtlTestCase < ActiveSupport::TestCase
 		outgoing_stream = StringIO.new("", 'w')
 		step.outgoing = outgoing_stream
 
-		step.run
+		run_step step
 
 		outgoing_stream.reopen(outgoing_stream.string, 'r')
 		output_unpacker = MessagePack::Unpacker.new(outgoing_stream)
@@ -34,7 +34,7 @@ class EtlTestCase < ActiveSupport::TestCase
 		incoming_stream.reopen(incoming_stream.string, 'r')
 		step.incoming = incoming_stream
 
-		step.run
+		run_step step
 	end
 
 	#Runs a transform step, passing the input array of objects, serialized as msgpack format,
@@ -53,7 +53,7 @@ class EtlTestCase < ActiveSupport::TestCase
 		outgoing_stream = StringIO.new("", 'w')
 		step.outgoing = outgoing_stream
 
-		step.run
+		run_step step
 
 		outgoing_stream.reopen(outgoing_stream.string, 'r')
 		output_unpacker = MessagePack::Unpacker.new(outgoing_stream)
@@ -63,5 +63,11 @@ class EtlTestCase < ActiveSupport::TestCase
 		end
 
 		output
+	end
+
+	def run_step(step)
+		step.shared_data = {}
+
+		step.run
 	end
 end

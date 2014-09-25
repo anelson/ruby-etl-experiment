@@ -2,8 +2,6 @@ require 'csv'
 require 'ruby-progressbar'
 
 namespace :padata do
-	ROWS_PER_BATCH = 1024
-
 	desc "Drop all loaded raw PA parcel data"
 	task :clean_raw_parcels => :environment do 
 		clean_raw_data RawParcel
@@ -162,7 +160,7 @@ namespace :padata do
 
 		t = Rodimus::Transformation.new
 
-		csv_step = CsvInput.new("rawdata/mini_parcel.csv")
+		csv_step = TextFileInputStep.new("rawdata/mini_parcel.csv", skip_header_lines: 5)
 		output_step = DummyOutput.new
 
 		t.steps << csv_step

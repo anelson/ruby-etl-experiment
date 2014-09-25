@@ -1,12 +1,14 @@
 # Reads lines from a text file, passing them to the next step one row at a time.
 class TextFileInputStep < SourceStep
+	DEFAULT_FILE_OPTIONS = { :universal_newline => true }
 	attr_accessor :file_path 
 
-	def initialize(file_path, skip_header_lines: 0, file_options: { })
+	def initialize(file_path, skip_header_lines: 0, strip_whitespace: true, file_options: { })
 		super()
 
 		@file_path = file_path
 		@skip_header_lines = skip_header_lines
+		@strip_whitespace = strip_whitespace
 		@file_options = file_options
 	end
 
@@ -29,6 +31,8 @@ class TextFileInputStep < SourceStep
 	end
 
 	def process_row(row)
+		row.strip! unless !@strip_whitespace
+
 		@output_row['line'] = @line
 		@output_row['data'] = row
 

@@ -6,7 +6,7 @@
 #
 initial_parcel:
   id: 1
-  folio: "01FOO"
+  folio: "0101000000020"
   owner1: "dick bob"
   d_o_r_code: 42
   sq_ftg: 10000.5

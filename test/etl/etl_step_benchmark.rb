@@ -57,6 +57,7 @@ class EtlStepBenchmark < EtlTestCase
 	ITERATION_COUNT = 10000
 
 	test "benchmark raw throughput assuming no I/O" do
+		skip("too slow")
 		Benchmark.bmbm do |bm|
 			bm.report('EtlStep with object serialization') do
 				t = Rodimus::Transformation.new
@@ -97,6 +98,6 @@ class EtlStepBenchmark < EtlTestCase
 		#
 		# Rodimus forks the ruby process after a postgres database connection is established, and when the forked process ends,
 		# it closes the connection.  This call forces this parent process to reconnect
-		ActiveRecord::Base.establish_connection
+		#ActiveRecord::Base.establish_connection
 	end
 end
