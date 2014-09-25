@@ -3,6 +3,10 @@ Rodimus.configure do |config|
 end
 
 class EtlTestCase < ActiveSupport::TestCase
+	def get_test_data_file_path(filename)
+		File.dirname(__FILE__) + '/testdata/' + filename
+	end
+	
 	#Runs a source step, assuming the step has its own input.  Takes msgpack-serialized output objects
 	#deserializing them and returns an array containing the output
 	def run_source_step(step)
