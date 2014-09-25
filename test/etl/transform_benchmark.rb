@@ -34,6 +34,7 @@ class TransformBenchmark < EtlTestCase
 	end
 
 	test "measure transform performance" do
+		skip("too slow")
 		Benchmark.benchmark("transform performance: ", 15, Benchmark::FORMAT) do |b|
 			times = []
 

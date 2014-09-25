@@ -37,6 +37,7 @@ GEM
       execjs
     coffee-script-source (1.8.0)
     erubis (2.7.0)
+    eventmachine (1.0.3)
     execjs (2.2.1)
     foreigner (1.6.1)
       activerecord (>= 3.0.0)
@@ -124,6 +125,7 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
+  eventmachine
   foreigner
   jbuilder (~> 2.0)
   jquery-rails

@@ -4,10 +4,6 @@ require 'msgpack'
 
 
 class TextFileInputStepTest < EtlTestCase
-	def get_test_data_file_path(filename)
-		File.dirname(__FILE__) + '/testdata/' + filename
-	end
-
 	test "reads zero rows from an empty text file" do
 		step = TextFileInputStep.new(get_test_data_file_path('empty.txt'))
 

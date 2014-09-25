@@ -5,6 +5,8 @@ require 'msgpack'
 class ContainerStepTest < EtlTestCase
 	class TestTransformStep < TransformStep
 		def initialize(add_key, add_value)
+			super()
+			
 			@add_key = add_key
 			@add_value = add_value
 		end

@@ -34,70 +34,71 @@ class TestObjectGenerator < DummyIOGenerator
 	end
 end
 
-class SourceEtlStep < EtlStep
+class SourceEtlStep < SourceStep
 	def initialize(input)
 		super()
-		@incoming = input
+
+		@input = input
+	end
+
+	def before_run
+		@incoming = @input
 	end
 end
 
 # A step that does some nominal processing on an object, returning a different object as a result
-class TransformEtlStep < EtlStep
+class TransformEtlStep < TransformStep
 	def process_row(x) 
 		{ :processed => true, :row => x}
 	end
 end
 
-# A step that does nothing with the input it's given
-class SinkEtlStep < EtlStep
-	def handle_output(x); nil; end
-end
-
 class EtlStepBenchmark < EtlTestCase
-	ITERATION_COUNT = 10000
+	ITERATION_COUNT = 100000
 
 	test "benchmark raw throughput assuming no I/O" do
-		skip("too slow")
-		Benchmark.bmbm do |bm|
-			bm.report('EtlStep with object serialization') do
-				t = Rodimus::Transformation.new
+		times = Benchmark.measure do
+			t = Transformation.new
+			
+			source = SourceEtlStep.new(TestStringGenerator.new(ITERATION_COUNT))
+			t.add_step source
 
-				source = SourceEtlStep.new(TestStringGenerator.new(ITERATION_COUNT))
-				t.steps << source
+			transform = TransformEtlStep.new
+			t.add_step transform
 
-				transform = TransformEtlStep.new
-				t.steps << transform
-
-				sink = SinkEtlStep.new
-				t.steps << sink
-				
-				t.run
-			end
-
-			bm.report('Rodimus Steps with no serialization') do
-				# Make a transform with three steps, the first one hooked up to an object generator,
-				# the last one writing out to nothing, and the one in between just outputting the object it's given
-				t = Rodimus::Transformation.new
-
-				source = Rodimus::Step.new
-				source.incoming = TestStringGenerator.new(ITERATION_COUNT)
-				t.steps << source
-
-				transform = Rodimus::Step.new
-				t.steps << transform
-
-				sink = Rodimus::Step.new
-				sink.outgoing = DevNull.new
-				t.steps << sink
-				
-				t.run
-			end
+			sink = NullStep.new
+			t.add_step sink
+			
+			t.run
 		end
+
+		puts "ETL source/sink with no I/O: #{ITERATION_COUNT} rows in #{times.real} seconds; #{ITERATION_COUNT / times.real} rows/sec"
+
+		times = Benchmark.measure do
+			# Make a transform with three steps, the first one hooked up to an object generator,
+			# the last one writing out to nothing, and the one in between just outputting the object it's given
+			t = Rodimus::Transformation.new
+
+			source = Rodimus::Step.new
+			source.incoming = TestStringGenerator.new(ITERATION_COUNT)
+			t.steps << source
+
+			transform = Rodimus::Step.new
+			t.steps << transform
+
+			sink = Rodimus::Step.new
+			sink.outgoing = DevNull.new
+			t.steps << sink
+			
+			t.run
+		end
+
+		puts "Rodiumus source/sink with no I/O: #{ITERATION_COUNT} rows in #{times.real} seconds; #{ITERATION_COUNT / times.real} rows/sec"
 
 		# Required to avoid ActiveRecord::StatementInvalid: PG::ConnectionBad: PQconsumeInput() : ROLLBACK failures
 		#
 		# Rodimus forks the ruby process after a postgres database connection is established, and when the forked process ends,
 		# it closes the connection.  This call forces this parent process to reconnect
-		#ActiveRecord::Base.establish_connection
+		ActiveRecord::Base.connection_pool.disconnect!
 	end
 end

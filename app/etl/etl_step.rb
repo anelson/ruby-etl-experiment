@@ -18,6 +18,8 @@ class EtlStep < Rodimus::Step
 		# It's VERY easy to forget to call the base class ctor, and when you do the step won't work at all
 		# To avoid head scratching and throwing things, catch this common mistake and make it explicit
 		@ctor_called = true
+
+		@discovered_hooks_cache = {}
 	end
 
 	def notify(subject, event)
@@ -26,6 +28,21 @@ class EtlStep < Rodimus::Step
 		end
 
 		super
+	end
+
+	# Rodimus uses an observer pattern to allow other code to hook in to various places.  This is useful but the
+	# implementation really REALLY sucks performance wise.  This re-implementation caches the hooks for each event
+	# type so it doesn't have to go on a reflection expedition every time
+	def on_notify(subject, event_type)
+		hooks = @discovered_hooks_cache[event_type]
+		if hooks == nil
+			hooks = discovered_hooks(event_type)
+			@discovered_hooks_cache[event_type] = hooks
+		end
+
+		hooks.each do |hook|
+			self.send hook
+		end
 	end
 
 	def method_missing(meth, *args, &block)
@@ -54,7 +71,7 @@ class EtlStep < Rodimus::Step
 
 	# Gets a transform-unique key given a key specific to this step
 	def shared_data_key_name(key)
-		key + @shared_data_key
+		@shared_data_key + "::" + key
 	end
 
 	# If this step is running, meaning it's in a forked child process, its @shared_data member
