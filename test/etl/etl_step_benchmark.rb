@@ -34,39 +34,39 @@ class TestObjectGenerator < DummyIOGenerator
 	end
 end
 
-class SourceEtlStep < EtlStep
+class SourceEtlStep < SourceStep
 	def initialize(input)
 		super()
-		@incoming = input
+
+		@input = input
+	end
+
+	def before_run
+		@incoming = @input
 	end
 end
 
 # A step that does some nominal processing on an object, returning a different object as a result
-class TransformEtlStep < EtlStep
+class TransformEtlStep < TransformStep
 	def process_row(x) 
 		{ :processed => true, :row => x}
 	end
 end
 
-# A step that does nothing with the input it's given
-class SinkEtlStep < EtlStep
-	def handle_output(x); nil; end
-end
-
 class EtlStepBenchmark < EtlTestCase
-	ITERATION_COUNT = 10000
+	ITERATION_COUNT = 100000
 
 	test "benchmark raw throughput assuming no I/O" do
 		times = Benchmark.measure do
 			t = Transformation.new
-
+			
 			source = SourceEtlStep.new(TestStringGenerator.new(ITERATION_COUNT))
 			t.add_step source
 
 			transform = TransformEtlStep.new
 			t.add_step transform
 
-			sink = SinkEtlStep.new
+			sink = NullStep.new
 			t.add_step sink
 			
 			t.run

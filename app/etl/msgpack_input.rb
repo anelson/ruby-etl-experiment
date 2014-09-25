@@ -11,8 +11,6 @@ module MsgpackInput
 	# and don't go through this accessor, or you're gonna have a bad time.  Then again, if your step is sourcing
 	# input from external data, you shouldn't be using this mixin
 	def incoming=(pipe)
-		pipe.binmode
-
-		@incoming = MessagePack::Unpacker.new(pipe)
+		@incoming = MsgpackIoReader.new(pipe)
 	end
 end
