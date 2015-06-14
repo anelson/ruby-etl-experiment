@@ -83,7 +83,6 @@ GEM
     rake (10.3.2)
     rdoc (4.1.2)
       json (~> 1.4)
-    rodimus (1.2.0)
     ruby-progressbar (1.5.1)
     sass (3.2.19)
     sass-rails (4.0.3)
@@ -133,7 +132,6 @@ DEPENDENCIES
   msgpack
   pg
   rails (= 4.1.5)
-  rodimus
   ruby-progressbar (= 1.5.1)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)

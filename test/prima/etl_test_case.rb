@@ -1,8 +1,6 @@
-Rodimus.configure do |config|
-  config.logger = Logger.new(nil)
-end
-
 class EtlTestCase < ActiveSupport::TestCase
+	include Prima
+	
 	def get_test_data_file_path(filename)
 		File.dirname(__FILE__) + '/testdata/' + filename
 	end

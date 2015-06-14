@@ -4,6 +4,22 @@
 		{
 			"follow_symlinks": true,
 			"path": "."
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/adam/Dropbox/projects/prima"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/adam/Dropbox/projects/go/src/github.com/anelson/goetl"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/adam/Dropbox/projects/miami"
+		},
+		{
+			"follow_symlinks": true,
+			"path": "/Users/adam/Dropbox/projects/pityr"
 		}
 	]
 }

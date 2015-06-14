@@ -8,8 +8,6 @@ gem 'upsert'
 
 gem 'foreigner'
 
-gem 'rodimus'
-
 gem 'msgpack'
 
 gem 'minitest-rails'

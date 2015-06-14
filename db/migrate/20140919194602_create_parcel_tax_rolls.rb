@@ -35,6 +35,8 @@ class CreateParcelTaxRolls < ActiveRecord::Migration
 
     add_index :parcel_tax_rolls, [:folio, :year], :unique => true
 
+    add_index :parcel_tax_rolls, [:folio, :year, :rowhash], :unique=>true
+
     add_foreign_key :parcel_tax_rolls, :parcels, dependent: :delete
   end
 end
